@@ -47,9 +47,9 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-  A[App (Expo / React Native)] --> B[(AsyncStorage<br/>Contatos)]
-  A -. opcional .-> C[API (Express + tRPC)]
-  C -. opcional .-> D[OAuth<br/>(se configurado)]
+  A[App (Expo e React Native)] --> B[(AsyncStorage - contatos)]
+  A --> C[API (Express + tRPC) - opcional]
+  C --> D[OAuth - opcional (se configurado)]
 ```
 
 ## Screenshots
