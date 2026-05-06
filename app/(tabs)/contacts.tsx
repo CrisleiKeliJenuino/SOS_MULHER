@@ -89,6 +89,17 @@ export default function ContactsScreen() {
   };
 
   const handleRemove = (contact: Contact) => {
+    if (Platform.OS === "web") {
+      const ok = globalThis.confirm?.(
+        `Deseja remover "${contact.name}" dos seus contatos de confiança?`,
+      );
+      if (!ok) return;
+      removeContact(contact.id).catch((e) => {
+        console.error("Erro ao remover contato:", e);
+      });
+      return;
+    }
+
     Alert.alert(
       "Remover contato",
       `Deseja remover "${contact.name}" dos seus contatos de confiança?`,
@@ -98,7 +109,11 @@ export default function ContactsScreen() {
           text: "Remover",
           style: "destructive",
           onPress: async () => {
-            await removeContact(contact.id);
+            try {
+              await removeContact(contact.id);
+            } catch (e) {
+              console.error("Erro ao remover contato:", e);
+            }
             if (Platform.OS !== "web") {
               await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
             }

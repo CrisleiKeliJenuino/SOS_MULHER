@@ -1,14 +1,29 @@
 import net from "node:net";
 import { spawn } from "node:child_process";
 
-const USE_SHELL = process.platform === "win32";
+const IS_WIN = process.platform === "win32";
+
+function spawnPnpm(args, options) {
+  // On Windows, `pnpm` is typically a `.cmd` shim which can't be spawned directly
+  // via CreateProcess (it can result in spawn EINVAL). Run it through cmd.exe
+  // while keeping shell=false to avoid Node's DEP0190 warning.
+  if (IS_WIN) {
+    return spawn("cmd.exe", ["/d", "/s", "/c", "pnpm", ...args], {
+      ...options,
+      shell: false,
+    });
+  }
+
+  return spawn("pnpm", args, { ...options, shell: false });
+}
 
 function isPortAvailable(port) {
   return new Promise((resolve) => {
     const server = net.createServer();
     server.unref();
     server.once("error", () => resolve(false));
-    server.listen(port, "127.0.0.1", () => {
+    // Bind without a host to detect conflicts on any interface.
+    server.listen(port, () => {
       server.close(() => resolve(true));
     });
   });
@@ -52,9 +67,8 @@ async function main() {
     EXPO_WEB_PREVIEW_URL: `http://localhost:${expoPort}`,
   };
 
-  const server = spawn("pnpm", ["dev:server"], { stdio: "inherit", env, shell: USE_SHELL });
-  const metro = spawn(
-    "pnpm",
+  const server = spawnPnpm(["dev:server"], { stdio: "inherit", env });
+  const metro = spawnPnpm(
     [
       "exec",
       "expo",
@@ -62,9 +76,11 @@ async function main() {
       "--web",
       "--port",
       String(expoPort),
-      "--non-interactive",
     ],
-    { stdio: "inherit", env, shell: USE_SHELL },
+    {
+      stdio: "inherit",
+      env,
+    },
   );
 
   const shutdown = (code) => {

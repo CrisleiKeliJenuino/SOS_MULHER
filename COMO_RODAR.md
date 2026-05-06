@@ -79,11 +79,48 @@ cd sos-mulheres
 # 2. Instale as dependências
 pnpm install
 
-# 3. Inicie o servidor de desenvolvimento
+# 3. (Opcional, mas recomendado) Configure variáveis de ambiente
+# Copie o arquivo de exemplo e ajuste conforme necessário
+# PowerShell:
+Copy-Item .env.example .env
+# Windows (cmd):
+copy .env.example .env
+# macOS/Linux:
+cp .env.example .env
+
+# 4. Inicie o servidor de desenvolvimento
 pnpm dev
 ```
 
-O servidor iniciará em: `http://localhost:8081`
+### Testar no celular (Expo Go) usando seu PC (LAN)
+
+1. Garanta que **PC e celular estão na mesma rede Wi‑Fi**.
+2. (Opcional) Suba o backend local (tRPC/API):
+
+```bash
+pnpm dev:server
+```
+
+1. Inicie o Expo para **Android/iOS** (vai mostrar o QR Code no terminal):
+
+```bash
+pnpm exec expo start
+```
+
+1. No celular, abra o **Expo Go** e escaneie o QR Code.
+
+Notas importantes:
+
+- No **celular**, `localhost` aponta para o próprio celular. Se você precisar do backend rodando no PC, configure `EXPO_PUBLIC_API_BASE_URL` no `.env` com o IP do seu PC, por exemplo: `http://192.168.0.10:3000`.
+- Se der erro de conexão/QR (firewall/rede), tente: `pnpm exec expo start --tunnel`.
+
+O Expo (web) iniciará em: `http://localhost:8081`
+
+Se a porta `8081` já estiver em uso, o script escolhe automaticamente a próxima porta livre (ex.: `8082`, `8083`, ...), evitando prompts interativos.
+
+Notas sobre OAuth:
+- Se você for usar login OAuth, preencha `OAUTH_SERVER_URL`, `VITE_APP_ID` e `VITE_OAUTH_PORTAL_URL` no `.env`.
+- Se não configurar, o servidor vai subir normalmente (OAuth fica desabilitado), mas rotas de OAuth não vão funcionar.
 
 ### Estrutura do Projeto
 

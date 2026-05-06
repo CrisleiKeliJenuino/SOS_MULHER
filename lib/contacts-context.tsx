@@ -41,28 +41,46 @@ export function ContactsProvider({ children }: { children: React.ReactNode }) {
   };
 
   const saveContacts = async (newContacts: Contact[]) => {
-    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(newContacts));
+    // Always update UI state immediately; persist best-effort.
     setContacts(newContacts);
+    try {
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(newContacts));
+    } catch (e) {
+      console.error("Erro ao salvar contatos:", e);
+    }
+  };
+
+  const updateContacts = useCallback(async (updater: (prev: Contact[]) => Contact[]) => {
+    setContacts((prev) => {
+      const next = updater(prev);
+      // Fire-and-forget persistence to keep UI responsive.
+      AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(next)).catch((e) => {
+        console.error("Erro ao salvar contatos:", e);
+      });
+      return next;
+    });
+  }, []);
+
+  const createId = () => {
+    const random = Math.random().toString(16).slice(2);
+    return `${Date.now()}-${random}`;
   };
 
   const addContact = useCallback(async (contact: Omit<Contact, "id">) => {
     const newContact: Contact = {
       ...contact,
-      id: Date.now().toString(),
+      id: createId(),
     };
-    const updated = [...contacts, newContact];
-    await saveContacts(updated);
-  }, [contacts]);
+    await updateContacts((prev) => [...prev, newContact]);
+  }, [updateContacts]);
 
   const updateContact = useCallback(async (id: string, contact: Omit<Contact, "id">) => {
-    const updated = contacts.map((c) => (c.id === id ? { ...contact, id } : c));
-    await saveContacts(updated);
-  }, [contacts]);
+    await updateContacts((prev) => prev.map((c) => (c.id === id ? { ...contact, id } : c)));
+  }, [updateContacts]);
 
   const removeContact = useCallback(async (id: string) => {
-    const updated = contacts.filter((c) => c.id !== id);
-    await saveContacts(updated);
-  }, [contacts]);
+    await updateContacts((prev) => prev.filter((c) => c.id !== id));
+  }, [updateContacts]);
 
   return (
     <ContactsContext.Provider value={{ contacts, addContact, updateContact, removeContact, isLoading }}>

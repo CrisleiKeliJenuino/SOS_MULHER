@@ -1,0 +1,2 @@
+# pnpm-specific configuration
+node-linker=hoisted
