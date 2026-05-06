@@ -1,10 +1,11 @@
 # SOS Mulher
 
-![Ícone do app](assets/images/icon.png)
+| ![Ícone do app](assets/images/favicon.png) |
+| :---: |
 
 App de emergência com **botão SOS**, **contatos de confiança** e **envio de localização** para facilitar um pedido de ajuda rápido.
 
-Este é o meu **primeiro Projeto Integrador** do curso de **BTI** na **Univesp**.
+Este é o nosso **primeiro Projeto Integrador** do curso de **BTI** na **Univesp**.
 
 - Frontend: **Expo / React Native** (com Expo Router)
 - Backend (opcional): **Express + tRPC**
