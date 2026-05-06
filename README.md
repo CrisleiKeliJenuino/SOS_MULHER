@@ -5,7 +5,7 @@
 
 App de emergência com **botão SOS**, **contatos de confiança** e **envio de localização** para facilitar um pedido de ajuda rápido.
 
-Este é o nosso **primeiro Projeto Integrador** do curso de **BTI** na **Univesp**.
+Este é o nosso **primeiro Projeto Integrador** do curso de **Bacharel em Técnologia da Informação (BTI)** na **[Univesp](https://univesp.br/)**.
 
 - Frontend: **Expo / React Native** (com Expo Router)
 - Backend (opcional): **Express + tRPC**
