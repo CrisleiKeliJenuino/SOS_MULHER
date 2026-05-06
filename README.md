@@ -45,7 +45,7 @@ flowchart TD
 
 | Home (SOS) | Contatos |
 | --- | --- |
-| *(adicione aqui)* | *(adicione aqui)* |
+| ![Home (SOS)](assets/images/screenshot-home-redacted.png) | *(adicione aqui)* |
 
 ## Stack
 
