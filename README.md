@@ -43,14 +43,14 @@ flowchart TD
   I --> J[Opcional: ligar para o 1º contato]
 ```
 
-## Arquitetura (alto nível)
+## Componentes do projeto
 
-```mermaid
-flowchart LR
-  A[App (Expo e React Native)] --> B[(AsyncStorage - contatos)]
-  A --> C[API (Express + tRPC) - opcional]
-  C --> D[OAuth - opcional (se configurado)]
-```
+| Componente | Papel no projeto |
+| --- | --- |
+| App (telas e navegação) | Onde a pessoa aciona o SOS e gerencia contatos |
+| Contatos (armazenamento local) | Mantém os contatos salvos no próprio dispositivo |
+| SOS (mensagem + localização) | Gera a mensagem de emergência com link de localização |
+| API / OAuth (opcional) | Integrações e autenticação, quando configuradas |
 
 ## Screenshots
 
