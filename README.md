@@ -41,11 +41,9 @@ flowchart TD
 
 ## Screenshots
 
-> Se você quiser, eu também posso gerar screenshots reais depois que você rodar o app e me mandar 2 prints (Home e Contatos).
-
-| Home (SOS) | Contatos |
+| Emergência | Contatos |
 | --- | --- |
-| ![Home (SOS)](assets/images/screenshot-home-redacted.png) | *(adicione aqui)* |
+| ![Emergência](assets/images/SOS%20Mullher%20Emerg%C3%AAncia.png) | ![Contatos](assets/images/SOS%20Mullher%20Contatos.png) |
 
 ## Stack
 
